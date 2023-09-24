@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contacts List</title>
+  </head>
+  <body>
+    <h1>Contacts List</h1>
+    <nav>
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/contacts">Contacts</a></li>
+        <li><a href="/addcontactform">Add Contacts</a></li>
+      </ul>
+    </nav>
+    <div>
+      <ul>
+        <% for(let i of contacts) {%>
+          <li>
+            <div>Name: <%= i.name %></div>
+            <div>Email ID: <%= i.email %></div>
+            <div>Contact No: <%= i.number %></div>
+          </li>
+        <% } %>
+      </ul>
+    </div>
+  </body>
+</html>
