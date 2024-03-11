@@ -2,26 +2,49 @@ const express = require("express");
 const path = require("path");
 const port = 8000;
 
+const db = require('./config/mongoose');
 const app = express();
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
-app.use(express.urlencoded());
+app.use(express.urlencoded()); // used only for reading form data in structured format
+app.use(express.static('assets'));
 
-const contactsList = [
+/*
+Middleware functions are functions that have access to the request object (req), the response object (res), and the next
+function in the application’s request-response cycle. The next function is a function in the Express router which, when
+invoked, executes the middleware succeeding the current middleware
+*/
+// // custom middleware 1
+// // the function has 3 param, req, res and next (this inform to invoke the next middleware/controller)
+// app.use(function(req, res, next) {
+//   req.Author = "Mayank Singh"
+//   console.log('from middleware 1');
+//   next();
+// })
+
+// // middleware 2
+// // the Author property added in middleware 1 can be used in coming middleware / controller
+// app.use(function(req, res, next){
+//   console.log(`from middleware 2, Author : ${req.Author}`);
+//   next();
+// })
+
+
+var contactsList = [
   {
     name: "Mr. Laurence Welch",
-    number: "+91 2790-819-497",
+    number: "2790819497",
     email: "Skylar90@gmail.com",
   },
   {
     name: "Brenda Lesch",
-    number: "+91 5325-653-511",
+    number: "915325653511",
     email: "Ruth_Gutkowski@gmail.com",
   },
   {
     name: "Emanuel Streich",
-    number: "+91 7667-905-887",
+    number: "7667905887",
     email: "Josie51@gmail.com",
   }
 ];
@@ -29,7 +52,7 @@ const contactsList = [
 //#region - Get Requests
 app.get("/", function (req, res) {
   // res.send(`<h1>Home Page</h1>`)
-  return res.render("home", { title: "My Contact List" });
+  return res.render("home", { title: "My Contact List", contacts: contactsList });
 });
 
 app.get("/contacts", function (req, res) {
@@ -50,12 +73,18 @@ app.post("/addcontact", function (req, res) {
   //   email : req.body.email
   // })
   contactsList.push(req.body)
-  return res.redirect('/contacts');
+  // return res.redirect('/contacts');
+  return res.redirect('/');
 });
 
-app.post("/deletecontact", function (req, res) {
-  contactsList = contactsList.filter(x => x.number !== req.body.number)
-  return res.redirect('/contacts');
+
+// for deleting a contact
+app.get("/deletecontact", function (req, res) {
+  // get the query from the url
+  const { number } = req.query;
+  const contactIndex = contactsList.findIndex(contact => contact.number == number);
+  if (contactIndex !== -1) contactsList.splice(contactIndex, 1);
+  return res.redirect('back');
 });
 
 //#endregion - Post Requests

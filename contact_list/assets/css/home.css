@@ -1,0 +1,98 @@
+body {
+  margin: 0;
+  font-family: sans-serif;
+}
+
+#page-heading {
+  text-align: center;
+  color: gray;
+}
+
+.navLinks {
+  display: flex;
+  list-style-type: none;
+  justify-content: space-evenly;
+}
+
+.navAnchorItem {
+  text-decoration: none;
+}
+
+.parent {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 100%;
+  height: 500px;
+}
+
+.contactList {
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
+  height: 100%;
+  width: 50%;
+}
+
+.contacts {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.contact {
+  display: flex;
+  flex-direction: row;
+  margin: 5px;
+  padding: 10px;
+  background-color: aliceblue;
+  border: 1px solid aqua;
+  border-radius: 10px;
+}
+
+.profilePic {
+  width: 30%;
+  justify-content: center;
+  align-items: center;
+}
+
+.contactDetails {
+  width: 60%;
+}
+
+.deleteButton{
+  width: 10%;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.deleteButton a {
+  color: red;
+  background-color: white;
+}
+
+.addContactForm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 10px;
+  height: 500px;
+  width: 50%;
+}
+
+.formField {
+  margin: 5px;
+  padding: 5px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.formField  label {
+  font-weight: bold;
+}
+
+.formField input{
+  width: 300px;
+  padding: 5px;
+}
