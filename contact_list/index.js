@@ -3,6 +3,8 @@ const path = require("path");
 const port = 8000;
 
 const db = require('./config/mongoose');
+const Contact = require('./models/contact');
+
 const app = express();
 
 app.set("view engine", "ejs");
@@ -67,14 +69,15 @@ app.get("/addcontactform", function (req, res) {
 
 //#region - Post Requests
 app.post("/addcontact", function (req, res) {
-  // contactsList.push({
-  //   name: req.body.name,
-  //   number: req.body.number,
-  //   email : req.body.email
-  // })
-  contactsList.push(req.body)
-  // return res.redirect('/contacts');
-  return res.redirect('/');
+  Contact.create({
+    ...req.body
+  }).then((newContact) => {
+    console.log(`added new contact to database ${JSON.stringify(newContact)}`);
+    return res.redirect('back');
+  }).catch((error)=> {
+    console.error(`add contact faced an error ${JSON.stringify(error)}`);
+    return res.redirect('back');
+  })
 });
 
 
