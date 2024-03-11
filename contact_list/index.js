@@ -32,33 +32,15 @@ invoked, executes the middleware succeeding the current middleware
 //   next();
 // })
 
-
-var contactsList = [
-  {
-    name: "Mr. Laurence Welch",
-    number: "2790819497",
-    email: "Skylar90@gmail.com",
-  },
-  {
-    name: "Brenda Lesch",
-    number: "915325653511",
-    email: "Ruth_Gutkowski@gmail.com",
-  },
-  {
-    name: "Emanuel Streich",
-    number: "7667905887",
-    email: "Josie51@gmail.com",
-  }
-];
-
 //#region - Get Requests
-app.get("/", function (req, res) {
-  // res.send(`<h1>Home Page</h1>`)
-  return res.render("home", { title: "My Contact List", contacts: contactsList });
+app.get("/", async function (req, res) {
+  const contacts = await Contact.find({});
+  return res.render("home", { title: "My Contact List", contacts: contacts });
 });
 
-app.get("/contacts", function (req, res) {
-  return res.render("contacts", { contacts: contactsList });
+app.get("/contacts", async function (req, res) {
+  const contacts = await Contact.find({});
+  return res.render("contacts", { contacts: contacts });
 });
 
 app.get("/addcontactform", function (req, res) {
@@ -74,7 +56,7 @@ app.post("/addcontact", function (req, res) {
   }).then((newContact) => {
     console.log(`added new contact to database ${JSON.stringify(newContact)}`);
     return res.redirect('back');
-  }).catch((error)=> {
+  }).catch((error) => {
     console.error(`add contact faced an error ${JSON.stringify(error)}`);
     return res.redirect('back');
   })
@@ -82,11 +64,14 @@ app.post("/addcontact", function (req, res) {
 
 
 // for deleting a contact
-app.get("/deletecontact", function (req, res) {
+app.get("/deletecontact", async function (req, res) {
   // get the query from the url
-  const { number } = req.query;
-  const contactIndex = contactsList.findIndex(contact => contact.number == number);
-  if (contactIndex !== -1) contactsList.splice(contactIndex, 1);
+  const { id } = req.query;
+  const resp = await Contact.deleteOne( { _id : id} );
+  if (!resp.deletedCount) {
+    console.error(`delete contact api faced an error ${JSON.stringify(resp)}`);
+    return;
+  }
   return res.redirect('back');
 });
 
